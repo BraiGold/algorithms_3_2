@@ -7,9 +7,9 @@
 
 using namespace std;
 
-void mergeImperio(vector<pair<pair<int, int>, int> >,vector<pair<pair<int, int>, int> >,int,int,int);
+void mergeImperio(vector<pair<pair<int, int>, int> > &a ,vector<pair<pair<int, int>, int> > &b, int low, int pivot, int high);
 
-void mergesortImperio(vector<pair<pair<int, int>, int> > a, vector<pair<pair<int, int>, int> >b, int low, int high);
+void mergesortImperio(vector<pair<pair<int, int>, int> > &a, vector<pair<pair<int, int>, int> > &b, int low, int high);
 
 void init(int n, vector<int> &padre, vector<int> &altura){
 	for (int i = 0; i < n; i++) {
@@ -45,6 +45,9 @@ vector<pair<pair<int, int>, int> > kruskal(vector<pair<pair<int, int>, int> > ar
 	vector<int> altura;
 	init(n, padre, altura);
 	mergesortImperio(aristas, aristas, 0, aristas.size() - 1);
+	for(int i = 0; i < aristas.size(); i++){
+		cout << aristas[i].first.first << "," << aristas[i].first.second<< "," << aristas[i].second << endl; 
+	}
 	for(int i = 0; i < aristas.size(); i++) {
 		pair<pair<int, int>, int> arista = aristas[i];
 		if((find(padre, (arista.first.first))) != find(padre, (arista.first).second)) {
@@ -58,7 +61,7 @@ vector<pair<pair<int, int>, int> > kruskal(vector<pair<pair<int, int>, int> > ar
 }
 
 
-void mergesortImperio(vector<pair<pair<int, int>, int> > a, vector<pair<pair<int, int>, int> >b, int low, int high){
+void mergesortImperio(vector<pair<pair<int, int>, int> > &a, vector<pair<pair<int, int>, int> > &b, int low, int high){
     int pivot;
     if(low<high){
         pivot=(low+high)/2;
@@ -67,7 +70,8 @@ void mergesortImperio(vector<pair<pair<int, int>, int> > a, vector<pair<pair<int
         mergeImperio(a,b,low,pivot,high);
     }
 }
-void mergeImperio(vector<pair<pair<int, int>, int> > a, vector<pair<pair<int, int>, int> > b, int low, int pivot, int high) {
+
+void mergeImperio(vector<pair<pair<int, int>, int> > &a, vector<pair<pair<int, int>, int> > &b, int low, int pivot, int high) {
     int h,i,j,k;
     h=low;
     i=low;
@@ -76,9 +80,13 @@ void mergeImperio(vector<pair<pair<int, int>, int> > a, vector<pair<pair<int, in
     while((h<=pivot)&&(j<=high)) {
         if(a[h].second<=a[j].second) {
             b[i].second=a[h].second;
+            b[i].first.first=a[h].first.first;
+            b[i].first.second=a[h].first.second;
             h++;
         }else{
             b[i].second=a[j].second;
+            b[i].first.first=a[j].first.first;
+            b[i].first.second=a[j].first.second;
             j++;
         }
         i++;
@@ -87,16 +95,22 @@ void mergeImperio(vector<pair<pair<int, int>, int> > a, vector<pair<pair<int, in
     if(h>pivot){
         for(k=j; k<=high; k++){
             b[i].second=a[k].second;
+            b[i].first.first=a[k].first.first;
+            b[i].first.second=a[k].first.second;
             i++;
         }
     }else{
         for(k=h; k<=pivot; k++){
             b[i].second=a[k].second;
+            b[i].first.first=a[k].first.first;
+            b[i].first.second=a[k].first.second;
             i++;
         }
     }
     for(k=low; k<=high; k++){
     	a[k].second=b[k].second;
+    	a[k].first.first=b[k].first.first;
+        a[k].first.second=b[k].first.second;
 	}
 }
 
@@ -120,20 +134,20 @@ int main(int argc, char* argv[]) {
 	}
 	vector<pair<pair<int, int>, int> > solucion;
 
-	solucion = kruskal(n, aristas);
+	solucion = kruskal(aristas, n);
 	int l = 0;
 	vector<int> ordenados;
 	for (int i = 0; i < n; i++){
 		ordenados.push_back(0);
 	}
 	for (int i = 0; i < solucion.size(); i++){
-		l = l + solucion.second;
-		ordenados[(solucion[i].first).second] = (solucion[i].first).first
+		l = l + solucion[i].second;
+		ordenados[(solucion[i].first).second] = (solucion[i].first).first;
 
 	}
 	cout << l << endl;
 	for (int i = 0; i < n; i++){
-		cout << ordenados[i];
+		cout << ordenados[i] << endl;
 	}
 
 
@@ -149,20 +163,20 @@ int main(int argc, char* argv[]) {
 	}
 
 	unionImperio(3, 4, padre, altura);
-	cout << endl;
+	//cout << endl;
 
 	for(int i = 0; i < 5; i++){
-		cout << altura[i]; 
+		//cout << altura[i]; 
 
 	}
-	cout << endl;
-	cout << endl;
+	//cout << endl;
+	//cout << endl;
 	for(int i = 0; i < 5; i++){
-		cout << padre[i];
+		//cout << padre[i];
 	}
-	cout << endl;
+	//cout << endl;
 	int a = find(padre, 4);
-	cout  << a << endl;
+	//cout  << a << endl;
 	return 0;
 
 }
