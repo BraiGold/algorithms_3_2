@@ -44,10 +44,22 @@ vector<pair<pair<int, int>, int> > kruskal(vector<pair<pair<int, int>, int> > ar
 	vector<int> padre;
 	vector<int> altura;
 	init(n, padre, altura);
-	mergesortImperio(aristas, aristas, 0, aristas.size() - 1);
-	for(int i = 0; i < aristas.size(); i++){
-		cout << aristas[i].first.first << "," << aristas[i].first.second<< "," << aristas[i].second << endl; 
+
+	/////agrego cosas (soy manu). Esto es para que el b este libre de cosas, es como un vector auxiliar para mergesort
+	pair<pair<int, int>, int> elemento;
+	elemento.first.first = 0;
+	elemento.first.second = 0;
+	elemento.second = 0;
+	vector<pair<pair<int, int>, int> > aristasordenadas;
+	for (int i = 0; i < aristas.size(); i++) {
+		aristasordenadas.push_back(elemento);
 	}
+	///////////////////// ahora cambio en el mergesort el segundo parametro
+
+	mergesortImperio(aristas, aristasordenadas, 0, aristas.size() - 1);
+	//DEBUG//for(int i = 0; i < aristas.size(); i++){
+	//DEBUG//	cout << aristas[i].first.first << "," << aristas[i].first.second<< "," << aristas[i].second << endl; 
+	//DEBUG//}
 	for(int i = 0; i < aristas.size(); i++) {
 		pair<pair<int, int>, int> arista = aristas[i];
 		if((find(padre, (arista.first.first))) != find(padre, (arista.first).second)) {
@@ -114,6 +126,55 @@ void mergeImperio(vector<pair<pair<int, int>, int> > &a, vector<pair<pair<int, i
 	}
 }
 
+vector<vector<int> > listaDeAdy(vector<pair<pair<int, int>, int> > solucion, int n){
+	vector<vector<int> >  listaAdy;
+	pair<int, int> arista;
+	vector<int> vacio;
+	for (int i = 0; i < n; i++) { 
+		listaAdy.push_back(vacio);
+	}
+
+	for (int i = 0; i < solucion.size(); i++){
+		arista.first = solucion[i].first.first;
+		arista.second = solucion[i].first.second;
+		listaAdy[arista.first].push_back(arista.second);
+		listaAdy[arista.second].push_back(arista.first);
+	}	
+	return listaAdy;
+}
+
+
+vector<int> DFS(vector<vector<int> > adyacencias) { 
+	vector<int> pila;
+	vector <int> orden;
+	//inicializo el vector orden con 0
+	for (int i = 0; i < adyacencias.size(); i++) {
+		orden.push_back(-1);
+	}
+
+	//cerr << "despues de inicializar la pila" << endl;
+
+	pila.push_back(0);
+	int w;
+	int ord = 0;
+
+	while (pila.size() > 0) {
+		w = pila.back();
+		pila.pop_back();
+		ord++;
+		orden[w]= ord;
+		//apilo todos los vecinos de w
+		for (int j = 0; j < adyacencias[w].size(); j++) {
+			if (orden[adyacencias[w][j]] < 0) {
+				pila.push_back(adyacencias[w][j]);
+			}
+		}
+		////cerr << "estoy en una iteracion del while" << endl;
+	}
+
+	return orden; 
+}
+
 
 int main(int argc, char* argv[]) {
 
@@ -136,16 +197,46 @@ int main(int argc, char* argv[]) {
 
 	solucion = kruskal(aristas, n);
 	int l = 0;
+	//cout << "solucion: " << endl;
+	//for (int i = 0; i < solucion.size(); i++) {
+	//	cout << solucion[i].first.first << "," << solucion[i].first.second << "," << solucion[i].second << endl;
+	//}
+
 	vector<int> ordenados;
-	for (int i = 0; i < n; i++){
+	ordenados.push_back(0);
+	for (int i = 1; i < n; i++){
 		ordenados.push_back(0);
 	}
-	for (int i = 0; i < solucion.size(); i++){
-		l = l + solucion[i].second;
-		ordenados[(solucion[i].first).second] = (solucion[i].first).first;
 
+	vector<vector<int> > adyacencias; 
+
+	//cerr << "antes de lista de ady" << endl;
+	
+	adyacencias = listaDeAdy(solucion, n);
+
+	//cerr << "despues de lista de ady y antes de DFS" << endl;
+
+	vector<int> orden;
+
+
+	orden = DFS(adyacencias);
+
+	//cerr << "despues de DFS" << endl;
+
+
+	for (int i = 0; i < solucion.size(); i++) {
+		l = l + solucion[i].second;
+		if ( (orden[solucion[i].first.first]) < (orden[solucion[i].first.second]) ) { 
+			//el primero es menor que el segundo entonces el primero es padre
+			ordenados[(solucion[i].first).second] = (solucion[i].first).first; //en ordenados[hijo] pongo el padre
+		} else { 
+			//el segundo es menor que el primero entonces el segundo es padre
+			ordenados[(solucion[i].first).first] = (solucion[i].first).second; 
+		}
 	}
-	cout << l << endl;
+
+
+	cerr << l << endl;
 	for (int i = 0; i < n; i++){
 		cout << ordenados[i] << endl;
 	}
