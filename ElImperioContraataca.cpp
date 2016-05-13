@@ -4,8 +4,22 @@
 #include <cstdio>
 #include <vector>
 #include <utility>
+#include <sys/time.h>
 
 using namespace std;
+
+timeval timeStart, timeEnd;
+
+void init_time()
+{
+    gettimeofday(&timeStart,NULL);
+}
+
+double get_time()
+{
+    gettimeofday(&timeEnd,NULL);
+    return (1000000*(timeEnd.tv_sec-timeStart.tv_sec)+(timeEnd.tv_usec-timeStart.tv_usec))/1000000.0;
+}
 
 void mergeImperio(vector<pair<pair<int, int>, int> > &a ,vector<pair<pair<int, int>, int> > &b, int low, int pivot, int high);
 
@@ -45,7 +59,6 @@ vector<pair<pair<int, int>, int> > kruskal(vector<pair<pair<int, int>, int> > ar
 	vector<int> altura;
 	init(n, padre, altura);
 
-	/////agrego cosas (soy manu). Esto es para que el b este libre de cosas, es como un vector auxiliar para mergesort
 	pair<pair<int, int>, int> elemento;
 	elemento.first.first = 0;
 	elemento.first.second = 0;
@@ -54,12 +67,9 @@ vector<pair<pair<int, int>, int> > kruskal(vector<pair<pair<int, int>, int> > ar
 	for (int i = 0; i < aristas.size(); i++) {
 		aristasordenadas.push_back(elemento);
 	}
-	///////////////////// ahora cambio en el mergesort el segundo parametro
 
 	mergesortImperio(aristas, aristasordenadas, 0, aristas.size() - 1);
-	//DEBUG//for(int i = 0; i < aristas.size(); i++){
-	//DEBUG//	cout << aristas[i].first.first << "," << aristas[i].first.second<< "," << aristas[i].second << endl; 
-	//DEBUG//}
+
 	for(int i = 0; i < aristas.size(); i++) {
 		pair<pair<int, int>, int> arista = aristas[i];
 		if((find(padre, (arista.first.first))) != find(padre, (arista.first).second)) {
@@ -152,8 +162,6 @@ vector<int> DFS(vector<vector<int> > adyacencias) {
 		orden.push_back(-1);
 	}
 
-	//cerr << "despues de inicializar la pila" << endl;
-
 	pila.push_back(0);
 	int w;
 	int ord = 0;
@@ -169,7 +177,6 @@ vector<int> DFS(vector<vector<int> > adyacencias) {
 				pila.push_back(adyacencias[w][j]);
 			}
 		}
-		////cerr << "estoy en una iteracion del while" << endl;
 	}
 
 	return orden; 
@@ -177,7 +184,13 @@ vector<int> DFS(vector<vector<int> > adyacencias) {
 
 
 int main(int argc, char* argv[]) {
-
+  bool pidieronTiempo = false; 
+  double tiempo;
+  if (argc > 1) {
+    if (argv[1] == string("-t")) {
+      pidieronTiempo = true;
+    }
+  }
 	int n;
 	int m;
 	cin >> n >> m;
@@ -195,34 +208,21 @@ int main(int argc, char* argv[]) {
 	}
 	vector<pair<pair<int, int>, int> > solucion;
 
+  	init_time();
+
 	solucion = kruskal(aristas, n);
 	int l = 0;
-	//cout << "solucion: " << endl;
-	//for (int i = 0; i < solucion.size(); i++) {
-	//	cout << solucion[i].first.first << "," << solucion[i].first.second << "," << solucion[i].second << endl;
-	//}
-
 	vector<int> ordenados;
 	ordenados.push_back(0);
+
 	for (int i = 1; i < n; i++){
 		ordenados.push_back(0);
 	}
 
 	vector<vector<int> > adyacencias; 
-
-	//cerr << "antes de lista de ady" << endl;
-	
 	adyacencias = listaDeAdy(solucion, n);
-
-	//cerr << "despues de lista de ady y antes de DFS" << endl;
-
 	vector<int> orden;
-
-
 	orden = DFS(adyacencias);
-
-	//cerr << "despues de DFS" << endl;
-
 
 	for (int i = 0; i < solucion.size(); i++) {
 		l = l + solucion[i].second;
@@ -235,39 +235,22 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
+	tiempo = get_time();
 
-	cerr << l << endl;
-	for (int i = 0; i < n; i++){
-		cout << ordenados[i] << endl;
+  	if (!pidieronTiempo) { 
+		cerr << l << endl;
+		for (int i = 0; i < n; i++){
+			cout << ordenados[i] << endl;
+		}
 	}
+	if (pidieronTiempo) {
+    	 printf("%.10f ", tiempo);
+  	}
 
 
 
 
-
-	vector<int> padre;
-	vector<int> altura;
-	init(5, padre, altura);
-	for(int i = 0; i < 5; i++){
-	}
-	for(int i = 0; i < 5; i++){
-	}
-
-	unionImperio(3, 4, padre, altura);
-	//cout << endl;
-
-	for(int i = 0; i < 5; i++){
-		//cout << altura[i]; 
-
-	}
-	//cout << endl;
-	//cout << endl;
-	for(int i = 0; i < 5; i++){
-		//cout << padre[i];
-	}
-	//cout << endl;
-	int a = find(padre, 4);
-	//cout  << a << endl;
 	return 0;
+
 
 }
