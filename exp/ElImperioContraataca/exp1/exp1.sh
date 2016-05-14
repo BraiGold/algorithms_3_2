@@ -3,9 +3,9 @@
 LC_NUMERIC="en_US.UTF-8"
 
 iteraciones=1
-n="$(seq 448 5000 100001)"
+n="$(seq 46 50 1001)"
 # el minimo n que puedo tener dado el m es: min n {n * (n - 1) /2 >= m} 
-m="100000" 
+m="1000" 
 pesomin="1"
 pesomax="100"
 

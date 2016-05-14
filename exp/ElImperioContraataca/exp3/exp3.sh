@@ -4,8 +4,8 @@ LC_NUMERIC="en_US.UTF-8"
 
 iteraciones=1
 # Para que el arbol sea AGM n-1 = m
-n="10001"
-m="10000" 
+n="100"
+m="99" 
 pesomin="1"
 pesomax="100"
 
