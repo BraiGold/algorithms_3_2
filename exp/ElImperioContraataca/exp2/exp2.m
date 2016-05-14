@@ -1,5 +1,5 @@
 % Procesado de los datos
-[enemigos_x, tiempo_y, e, cant] = leer_datos_float('tiempos-exp1.txt');
+[rutas_x, tiempo_y, e, cant] = leer_datos_float('tiempos-exp2.txt');
 
 
 % Creación de los gráficos
@@ -7,23 +7,38 @@ filetype='-dpng';
 %mkdir('graficos');
 figure;
 
-n = size(enemigos_x);
-ult = enemigos_x(n);
-ultimo = ult(1);
-primero = enemigos_x(1);
+n = 40; %CANTIDAD DE ARISTAS CONSTANTE	
 
-eje_x = primero:ultimo;
-eje_y = (eje_x/57000000);
+m = size(rutas_x);
+ult = rutas_x(m);
+ultimo = ult(1);
+primero = rutas_x(1);
+
+%disp(primero);
+%disp(ultimo);
+
+
+eje_x = (primero:ult);
+aux=log2(eje_x);
+disp(eje_x);
+disp(aux);
+auxx= times(aux, eje_x);
+eje_y = times(auxx,(1/500000));
+%disp('y');
+%disp(eje_y);
+
+%disp('x');
+%disp(eje_x);
 
 
 hold on;
 x = gca;
-xlim([primero ultimo]);
-plot(eje_x,eje_y,'r'); %O(n)
-errorbar( enemigos_x, tiempo_y, e);
-xlabel('Cantidad de Enemigos','FontSize',12);
+%xlim([0 dim]);
+plot(eje_x,eje_y,'r'); 
+errorbar(rutas_x, tiempo_y, e, 'b');
+xlabel('Cantidad de Rutas (n = 40 )','FontSize',12); %CAMBIAR M
 ylabel('Tiempo de ejecucion en segundos','FontSize',10);
-legend('Complejidad O(n)','Tiempo de ejecucion del algoritmo','Location','northwest')
+legend('Complejidad O(m (log m))','Tiempo de ejecucion del algoritmo','Location','northwest')
 %set(get(h, 'Parent'), 'YScale', 'log');
 hold off;
-print('exp1', filetype);
+print('exp2', filetype);
