@@ -35,7 +35,7 @@ int main() {
 
 
 	char filename[64];
-	sprintf(filename, "grafoConexo-%d.txt", n);
+	sprintf(filename, "grafoConexo-n%d-m%d.txt", n, m);
 	
 
 	doc = fopen(filename,"w");

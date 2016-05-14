@@ -27,7 +27,7 @@ done
 for i in $n; do
   echo "Esta creando el archivo numero"
   printf "%d\n " $i
-  printf "%d %d %d \n" $i $m $pesomin $pesomax | $(dirname $0)/generador #parametros del programa generador de archivos de entrada (n, t, cota) 
+  printf "%d %d %d \n" $i $m $pesomin $pesomax | $(dirname $0)/generador #parametros del programa generador de archivos de entrada (n, m, pesomin, pesomax) 
 done 
 
 printf "%d \n" $iteraciones >> $(dirname $0)/tiempos-exp1.txt

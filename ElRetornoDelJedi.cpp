@@ -82,39 +82,43 @@ int main(int argc, char* argv[]) {
 	for( int i = 0; i < n; i ++){
 		for(int j = 0; j < m; j++){
 			if (i == 0 && j > 0){ //estoy en la primer fila
-				if(abs(matriz[i][j] - matriz[i][j-1]) <= h){
+				s[i][j] = costo(i, j-1, i, j, h, matriz) + s[i][j-1];
+				/*if(abs(matriz[i][j] - matriz[i][j-1]) <= h){
 					s[i][j] = s[i][j-1];
 				}else{
 					s[i][j] = abs(matriz[i][j] - matriz[i][j-1]) - h + s[i][j-1];
 
-				}
+				}*/
 			}
 			
 			if(i > 0 && j == 0){// estoy en primer columna
-				if(abs(matriz[i][j] - matriz[i-1][j]) <= h){
+				s[i][j] = costo(i-1, j, i, j, h, matriz) + s[i-1][j];
+				/*if(abs(matriz[i][j] - matriz[i-1][j]) <= h){
 					s[i][j] = s[i-1][j];
 
 				} else{
 					s[i][j] = abs(matriz[i][j] - matriz[i-1][j]) - h + s[i-1][j];
 
-				}
+				}*/
 			}
 			
 			if(i > 0 && j > 0){
-				if(abs(matriz[i][j] - matriz[i-1][j]) <= h){
+				deArriba = costo(i-1, j, i, j, h, matriz);
+				/*if(abs(matriz[i][j] - matriz[i-1][j]) <= h){
 					deArriba = 0;
 
 				}else{
 					deArriba = abs(matriz[i][j] - matriz[i-1][j]) - h;
 
-				}
-				if(abs(matriz[i][j] - matriz[i][j-1]) <= h){
+				}*/
+				deIzq = costo(i, j-1, i, j, h, matriz);
+				/*if(abs(matriz[i][j] - matriz[i][j-1]) <= h){
 					deIzq = 0;
 
 				}else{
 					deIzq = abs(matriz[i][j] - matriz[i][j-1]) - h;
 
-				}
+				}*/
 				s[i][j] = minimo(deArriba + s[i-1][j], deIzq + s[i][j-1]);
 
 			}
@@ -165,7 +169,7 @@ int main(int argc, char* argv[]) {
 	while (respuesta.size() > 0) {
 		a = respuesta.back();
 		cout << a << endl;
-		if (a == 'Y') {
+		/*if (a == 'Y') {
 			if(abs(matriz[bx][by] - matriz[bx][by+1]) > h) {
 				prueba = prueba + abs(matriz[bx][by] - matriz[bx][by+1]) - h;
 				//cerr << "Y: " << abs(matriz[bx][by] - matriz[bx][by+1]) - h << endl;
@@ -178,7 +182,7 @@ int main(int argc, char* argv[]) {
 
 			} //si no, es 0
 			bx++;
-		}
+		}*/
 		respuesta.pop_back();
 	}
 	

@@ -35,7 +35,7 @@ int main() {
 
 
 	char filename[64];
-	sprintf(filename, "grafoConexo-%d.txt", n);
+	sprintf(filename, "grafoConexo-n%d-m%d.txt", n, m);
 	
 
 	doc = fopen(filename,"w");
@@ -107,7 +107,7 @@ int main() {
 			j = randombis() % n;    //(n - 1 - 0 + 1) + 0   
 			while (yaEsta(i, j, aristas) || (i == j) ) {
 				i = randombis() % n;    //(n - 1 - 0 + 1) + 0   
-				j = randombis() % n;    //(n - 1 - 0 + 1) + 0   
+				j = randombis() % n;    //(n - 1 - 0 + 1) + 0  
 			} 
 			peso = randombis() %  (max_peso - min_peso + 1) + min_peso;  
 
