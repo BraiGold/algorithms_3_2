@@ -20,10 +20,10 @@ primero = rutas_x(1);
 
 eje_x = (primero:ult);
 aux=log2(eje_x);
-disp(eje_x);
-disp(aux);
+%disp(eje_x);
+%disp(aux);
 auxx= times(aux, eje_x);
-eje_y = times(auxx,(1/500000));
+eje_y = times(auxx,(1/15000000));
 %disp('y');
 %disp(eje_y);
 
@@ -36,7 +36,7 @@ x = gca;
 %xlim([0 dim]);
 plot(eje_x,eje_y,'r'); 
 errorbar(rutas_x, tiempo_y, e, 'b');
-xlabel('Cantidad de Rutas (n = 40 )','FontSize',12); %CAMBIAR M
+xlabel('Cantidad de Rutas','FontSize',12); %CAMBIAR M
 ylabel('Tiempo de ejecucion en segundos','FontSize',10);
 legend('Complejidad O(m (log m))','Tiempo de ejecucion del algoritmo','Location','northwest')
 %set(get(h, 'Parent'), 'YScale', 'log');
