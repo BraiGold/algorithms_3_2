@@ -3,8 +3,10 @@
 LC_NUMERIC="en_US.UTF-8"
 
 iteraciones=1
-n="$(seq 1000 50 2000)"
-m="1000" 
+#n="$(seq 1000 50 2000)"
+#m="1000" 
+n="$(seq 100 50 600)"
+m="300"
 
 h="20"
 min="1"
