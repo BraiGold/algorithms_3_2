@@ -22,21 +22,21 @@ primero = n_x(1);
 
 dim = ultimo-primero+1; %+1 porque matlab no me cuenta el cero -.-
 %disp(dim);
-
+disp(dim);
 
 eje_x = (primero:ult);
 %disp('x');
 %disp(eje_x);
 
 aux_y = eje_x * m; 
-eje_y = times(aux_y, 1/1000000);
+eje_y = times(aux_y, 1/1600);
 
 %eje_y(1:dim) = (log2(m) * m) *(1/5000000);
 disp('y');
 
 hold on;
 x = gca;
-xlim([0 dim]);
+xlim([90 610]);
 %ylim([0.0005 0.0022]);
 plot(eje_x,eje_y,'r'); 
 errorbar(n_x, tiempo_y, e, 'b');
