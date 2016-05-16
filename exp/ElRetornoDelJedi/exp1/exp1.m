@@ -1,5 +1,5 @@
 % Procesado de los datos
-[enemigos_x, tiempo_y, e, cant] = leer_datos_float('tiempos-exp1.txt');
+[n_x, tiempo_y, e, cant] = leer_datos_float('tiempos-exp1.txt');
 
 
 % Creación de los gráficos
@@ -7,23 +7,42 @@ filetype='-dpng';
 %mkdir('graficos');
 figure;
 
-n = size(enemigos_x);
-ult = enemigos_x(n);
+m = 300; %CANTIDAD DE ARISTAS CONSTANTE	
+
+n = size(n_x);
+ult = n_x(n);
 ultimo = ult(1);
-primero = enemigos_x(1);
+primero = n_x(1);
 
-eje_x = primero:ultimo;
-eje_y = (eje_x/57000000);
+%disp(primero);
+%disp(ultimo);
 
+% COMPLEJIDAD O(m * n)
+
+
+dim = ultimo-primero+1; %+1 porque matlab no me cuenta el cero -.-
+%disp(dim);
+
+
+eje_x = (primero:ult);
+%disp('x');
+%disp(eje_x);
+
+aux_y = eje_x * m; 
+eje_y = times(aux_y, 1/1000000);
+
+%eje_y(1:dim) = (log2(m) * m) *(1/5000000);
+disp('y');
 
 hold on;
 x = gca;
-xlim([primero ultimo]);
-plot(eje_x,eje_y,'r'); %O(n)
-errorbar( enemigos_x, tiempo_y, e);
-xlabel('Cantidad de Enemigos','FontSize',12);
+xlim([0 dim]);
+%ylim([0.0005 0.0022]);
+plot(eje_x,eje_y,'r'); 
+errorbar(n_x, tiempo_y, e, 'b');
+xlabel('Valor de N','FontSize',12); %CAMBIAR M
 ylabel('Tiempo de ejecucion en segundos','FontSize',10);
-legend('Complejidad O(n)','Tiempo de ejecucion del algoritmo','Location','northwest')
+legend('Complejidad O(n * m)','Tiempo de ejecucion del algoritmo','Location','northwest')
 %set(get(h, 'Parent'), 'YScale', 'log');
 hold off;
 print('exp1', filetype);
