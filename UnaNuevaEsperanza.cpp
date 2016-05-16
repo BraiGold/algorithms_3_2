@@ -16,9 +16,31 @@ using namespace std;
 void BFS(vector<vector<int> >& g,vector<int>& distancia,int inicial);
 vector<int> elegirUnOptimo(vector<vector<int> >& g,vector<int>& distancia);
 
+timeval timeStart, timeEnd;
+
+void init_time()
+{
+    gettimeofday(&timeStart,NULL);
+}
+
+double get_time()
+{
+    gettimeofday(&timeEnd,NULL);
+    return (1000000*(timeEnd.tv_sec-timeStart.tv_sec)+(timeEnd.tv_usec-timeStart.tv_usec))/1000000.0;
+}
+
 int main(int argc, char* argv[]) {
+  bool pidieronTiempo = false; 
+  double tiempo;
+  if (argc > 1) {
+    if (argv[1] == string("-t")) {
+      pidieronTiempo = true;
+    }
+  }
+
   int n,m;
   cin >> n >> m;
+  init_time();
   vector<int> l;
   vector<vector<int> >  g(3*n,l);//grafo de 3n nodos
   for (int i = 0; i < m; i++) { //genero el grafo con sus 3 copias y saltos en las aristas especiales
@@ -49,11 +71,19 @@ int main(int argc, char* argv[]) {
   BFS(g,distancia,3*n-1);
   vector<int> caminoMin=elegirUnOptimo(g,distancia);//devolvera un camino optimo de 0 a 3n-1
   //respuesta:
-  cout << caminoMin.size()+1 << endl;
-  for (size_t i = 0; i < caminoMin.size()-1; i++) {
-    cout <<caminoMin[i] <<" ";
+  tiempo = get_time();
+  if (!pidieronTiempo) { 
+    cout << caminoMin.size()+1 << endl;
+    for (size_t i = 0; i < caminoMin.size()-1; i++) {
+      cout <<caminoMin[i] <<" ";
+    }
+    cout << caminoMin.back() << endl;
   }
-  cout << caminoMin.back() << endl;
+  if (pidieronTiempo) {
+    printf("%.10f ", tiempo);
+  }
+  return 0;
+
 }
 
 void BFS(vector<vector<int> >& g,vector<int>& distancia,int inicial){

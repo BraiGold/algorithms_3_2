@@ -3,8 +3,8 @@
 LC_NUMERIC="en_US.UTF-8"
 
 iteraciones=1
-n="100"
-m="$(seq 99 500 4950)" 
+n="1000"
+m="$(seq 999 1000 49500)" 
 # el minimo m que puedo tener dado n es: m = n-1 
 # el maximo m que puedo tener dado n es: m = n * (n - 1) /2 
 

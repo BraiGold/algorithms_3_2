@@ -3,9 +3,9 @@
 LC_NUMERIC="en_US.UTF-8"
 
 iteraciones=1
-n="100"
-m="2500"
-e="$(seq 2 500 2500)"
+n="1000"
+m="25500"
+e="$(seq 2 150 2500)"
 # el minimo m que puedo tener dado n es: m = n-1 
 # el maximo m que puedo tener dado n es: m = n * (n - 1) /2 
 
